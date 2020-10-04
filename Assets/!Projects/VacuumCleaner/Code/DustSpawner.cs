@@ -6,7 +6,7 @@ using UnityEngine;
 public class DustSpawner : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _dustGameObject;
+    private GameObject _dustGameObject = null;
 
     [SerializeField]
     private int _dustCount = 10;
