@@ -8,25 +8,9 @@ TagManager:
   - ground
   - target
   - ball
-  - iWall
-  - symbol_O_Goal
-  - symbol_X
   - wall
-  - symbol_X_Goal
-  - symbol_O
-  - goal
-  - block
-  - walkableSurface
-  - purpleAgent
-  - purpleGoal
-  - blueAgent
-  - blueGoal
-  - switchOff
-  - pyramid
-  - stone
-  - badFood
-  - food
   - dust
+  - missile
   layers:
   - Default
   - TransparentFX
@@ -36,7 +20,7 @@ TagManager:
   - UI
   - 
   - 
-  - Player
+  - Agent
   - 
   - 
   - 

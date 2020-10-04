@@ -16,8 +16,6 @@ public class VacuumAgent : Agent
     [SerializeField]
     private float _maxRotation = 5;
     [SerializeField]
-    private float _detectionAngle = 30;
-    [SerializeField]
     private string _wallTag = "wall";
     [SerializeField]
     private string _dustTag = "dust";
@@ -28,7 +26,6 @@ public class VacuumAgent : Agent
     private Rigidbody _rigidbody;
 
     private float _currentSpeed = 0;
-    private float _rewardAddUp = 0;
     private float _startTime;
 
     public override void Initialize()
@@ -46,8 +43,8 @@ public class VacuumAgent : Agent
         SetResetParameters();
     }
 
-    public float LidarRotateSpeed = 10;
-    float _lastLidarAngle = 0;
+   // public float LidarRotateSpeed = 10;
+   // float _lastLidarAngle = 0;
     public override void CollectObservations(VectorSensor sensor)
     {
          var forward = transform.forward;
@@ -152,7 +149,6 @@ public class VacuumAgent : Agent
 
     public void SetResetParameters()
     {
-        _rewardAddUp = 0;
         transform.parent.GetComponent<DustSpawner>().GenerateDust();
         _startTime = Time.time;
         SetVC();
