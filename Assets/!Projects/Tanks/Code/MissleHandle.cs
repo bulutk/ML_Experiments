@@ -24,16 +24,7 @@ public class MissleHandle : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "agent" && collision.gameObject != _ownerAgent)
-        {
-            _ownerAgent.HandleEnemyHit(collision.rigidbody.GetComponent<TankAgent>());
-        }
-        else if (collision.gameObject.tag == "target")
-        {
-            _ownerAgent.AddReward(5);
-            collision.gameObject.GetComponent<RewardBoxHandle>().Recycle();
-        }
-
+        _ownerAgent.HandleMissileHit(collision);
         this.Recycle();
     }
 }

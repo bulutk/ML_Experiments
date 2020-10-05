@@ -13,15 +13,14 @@ public class TankMap : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        RewardBoxPref.CreatePool();
         Academy.Instance.OnEnvironmentReset += EnvironmentReset;
     }
 
     private void EnvironmentReset()
     {
-        if(_rewardBoxInstance == null)
+        if(_rewardBoxInstance == null )
         {
-            _rewardBoxInstance = RewardBoxPref.Spawn(transform.position);
+            _rewardBoxInstance = GameObject.Instantiate(RewardBoxPref, transform.position, Quaternion.identity);
         }
     }
 }

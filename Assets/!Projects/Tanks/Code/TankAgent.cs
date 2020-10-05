@@ -12,12 +12,14 @@ using System;
 public class TankAgent : Agent, IInput
 {
     public Transform SpawnPoint;
+    public TankAgent EnemyAgent;
     public int MaxHealth = 3;
 
     private ArcadeKart m_Kart;
     private float m_Acceleration;
     private float m_Steering;
     private TankCanonHandle m_tankCanonHandle;
+
     private int _currentHealth;
 
     public override void Initialize()
@@ -40,6 +42,8 @@ public class TankAgent : Agent, IInput
         sensor.AddObservation(m_tankCanonHandle.CanShootNow());
         sensor.AddObservation(_currentHealth);
         sensor.AddObservation(m_Kart.LocalSpeed());
+        Vector3 EnemyVector = EnemyAgent.transform.position - transform.position;
+        sensor.AddObservation(transform.InverseTransformVector(EnemyVector));
     }
 
     void OnCollisionEnter(Collision collision)
@@ -50,16 +54,34 @@ public class TankAgent : Agent, IInput
         }
     }
 
-    internal void HandleEnemyHit(TankAgent EnemyHit)
+    internal void HandleMissileHit(Collision collision)
     {
-        SetReward(20);
-        EnemyHit.SetReward(-20);
-
-        EnemyHit._currentHealth--;
-        if(EnemyHit._currentHealth <= 0)
+        if (collision.gameObject.tag == "agent" && collision.gameObject != this.gameObject)
         {
-            EnemyHit.SetReward(-100);
-            EndEpisode();
+            TankAgent EnemyHit = collision.rigidbody.GetComponent<TankAgent>();
+            SetReward(20);
+            EnemyHit.SetReward(-20);
+
+            EnemyHit._currentHealth--;
+            if (EnemyHit._currentHealth <= 0)
+            {
+                EnemyHit.SetReward(-100);
+                EndEpisode();
+            }
+        }
+        else if (collision.gameObject.tag == "target")
+        {
+            AddReward(5);
+            Destroy(collision.gameObject);
+        }
+        else
+        {
+            float dist = (collision.GetContact(0).point - transform.position).magnitude;
+            float point = 10 - dist;
+            if(point > 0)
+            {
+                AddReward(point / 10); //We give points for close hits
+            }
         }
     }
 
@@ -73,6 +95,8 @@ public class TankAgent : Agent, IInput
         if(actionBuffers.ContinuousActions[4] >= 1)
         {
             m_tankCanonHandle.Shoot();
+            float dot = Vector3.Dot((EnemyAgent.transform.position - transform.position).normalized, m_tankCanonHandle.GetTowerForward());
+            AddReward(dot);
         }
     }
 

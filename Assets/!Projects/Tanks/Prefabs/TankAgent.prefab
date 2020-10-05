@@ -586,6 +586,7 @@ MonoBehaviour:
   hasUpgradedFromAgentParameters: 1
   MaxStep: 5000
   SpawnPoint: {fileID: 0}
+  EnemyAgent: {fileID: 0}
   MaxHealth: 3
 --- !u!114 &1322787044733974996
 MonoBehaviour:
@@ -605,7 +606,6 @@ MonoBehaviour:
   MissilePref: {fileID: 4652428235125907336, guid: 66e228334560b1a488735184e998f631, type: 3}
   MissileSpeed: 100
   MaxCanonAngle: 25
-  MinCanonAngle: -25
   TowerRotationPerSec: 30
   CanonRotationPerSec: 20
   ShootCooldownSecs: 1
@@ -622,7 +622,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 5
+    VectorObservationSize: 8
     NumStackedVectorObservations: 1
     VectorActionSize: 05000000
     VectorActionDescriptions: []
@@ -718,14 +718,14 @@ MonoBehaviour:
   - wall
   - agent
   - target
-  m_RaysPerDirection: 10
+  m_RaysPerDirection: 8
   m_MaxRayDegrees: 180
   m_SphereCastRadius: 0.5
   m_RayLength: 20
   m_RayLayerMask:
     serializedVersion: 2
     m_Bits: 257
-  m_ObservationStacks: 2
+  m_ObservationStacks: 1
   rayHitColor: {r: 1, g: 0, b: 0, a: 1}
   rayMissColor: {r: 1, g: 1, b: 1, a: 1}
   m_StartVerticalOffset: 0

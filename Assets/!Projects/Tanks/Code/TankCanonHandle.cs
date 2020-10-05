@@ -52,6 +52,11 @@ public class TankCanonHandle : MonoBehaviour
         rigid.AddRelativeForce(new Vector3(0, 0, MissileSpeed));
     }
 
+    public Vector3 GetTowerForward()
+    {
+        return Tower.transform.forward;
+    }
+
     public bool CanShootNow()
     {
         return _lastShootTime + ShootCooldownSecs <= Time.time;
