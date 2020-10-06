@@ -40,10 +40,11 @@ public class TankAgent : Agent, IInput
         sensor.AddObservation(m_tankCanonHandle.CurrentCanonAngle / m_tankCanonHandle.MaxCanonAngle);
         sensor.AddObservation(m_tankCanonHandle.CurrentTowerAngle / 360f);
         sensor.AddObservation(m_tankCanonHandle.CanShootNow());
-        sensor.AddObservation(_currentHealth);
+        sensor.AddObservation(_currentHealth / (float)MaxHealth);
         sensor.AddObservation(m_Kart.LocalSpeed());
         Vector3 EnemyVector = EnemyAgent.transform.position - transform.position;
-        sensor.AddObservation(transform.InverseTransformVector(EnemyVector));
+        sensor.AddObservation(Vector3.SignedAngle(EnemyVector, transform.forward, Vector3.up)/180f);
+        sensor.AddObservation(EnemyVector.magnitude / 30f);
     }
 
     void OnCollisionEnter(Collision collision)
@@ -60,12 +61,13 @@ public class TankAgent : Agent, IInput
         {
             TankAgent EnemyHit = collision.rigidbody.GetComponent<TankAgent>();
             SetReward(20);
-            EnemyHit.SetReward(-20);
+            //EnemyHit.SetReward(-20);
 
             EnemyHit._currentHealth--;
             if (EnemyHit._currentHealth <= 0)
             {
-                EnemyHit.SetReward(-100);
+                SetReward(100);
+              //  EnemyHit.SetReward(-100);
                 EndEpisode();
             }
         }
@@ -77,10 +79,10 @@ public class TankAgent : Agent, IInput
         else
         {
             float dist = (collision.GetContact(0).point - transform.position).magnitude;
-            float point = 10 - dist;
-            if(point > 0)
+            float point = (20f - dist)/20f;
+            if(point > 0f)
             {
-                AddReward(point / 10); //We give points for close hits
+                AddReward(point * 5f); //We give points for close hits
             }
         }
     }
@@ -95,8 +97,6 @@ public class TankAgent : Agent, IInput
         if(actionBuffers.ContinuousActions[4] >= 1)
         {
             m_tankCanonHandle.Shoot();
-            float dot = Vector3.Dot((EnemyAgent.transform.position - transform.position).normalized, m_tankCanonHandle.GetTowerForward());
-            AddReward(dot);
         }
     }
 
